@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record Pedido(
-        int numero,
+        Integer numero,
         String telefone,
         String nomeCliente,
         List<ItemPedido> itens,

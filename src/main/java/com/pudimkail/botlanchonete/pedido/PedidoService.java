@@ -9,27 +9,25 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Registra os pedidos. Os preços e o total são calculados aqui, a partir do cardápio,
+ * Registra os pedidos no PostgreSQL. Os preços e o total são calculados aqui, a partir do cardápio,
  * e nunca pela IA: assim o cliente não recebe um valor errado.
- * Os pedidos ficam na memória (somem ao reiniciar). Próximo passo: salvar no PostgreSQL.
  */
 @Service
 public class PedidoService {
 
     private final CardapioService cardapioService;
-    private final List<Pedido> pedidos = new CopyOnWriteArrayList<>();
-    private final AtomicInteger proximoNumero = new AtomicInteger(1);
+    private final PedidoRepository repository;
 
-    public PedidoService(CardapioService cardapioService) {
+    public PedidoService(CardapioService cardapioService, PedidoRepository repository) {
         this.cardapioService = cardapioService;
+        this.repository = repository;
     }
 
+    /** Pedidos do mais novo para o mais antigo. */
     public List<Pedido> listar() {
-        return List.copyOf(pedidos);
+        return repository.findAllByOrderByNumeroDesc().stream().map(PedidoEntity::paraPedido).toList();
     }
 
     /** Recebe o JSON que a IA mandou na ferramenta registrar_pedido. */
@@ -59,11 +57,10 @@ public class PedidoService {
         BigDecimal taxa = tipoEntrega.equals("entrega") ? cardapioService.getCardapio().taxaEntrega() : BigDecimal.ZERO;
         BigDecimal total = itens.stream().map(Pedido.ItemPedido::subtotal).reduce(taxa, BigDecimal::add);
 
-        Pedido pedido = new Pedido(proximoNumero.getAndIncrement(), telefone, dados.path("nome_cliente").asText(),
+        Pedido pedido = new Pedido(null, telefone, dados.path("nome_cliente").asText(),
                 itens, tipoEntrega, endereco, dados.path("forma_pagamento").asText(),
                 dados.path("observacoes").asText(""), taxa, total, LocalDateTime.now());
-        pedidos.add(pedido);
-        return pedido;
+        return repository.save(PedidoEntity.de(pedido)).paraPedido();
     }
 
     /** Resumo devolvido para a IA confirmar com o cliente. */
