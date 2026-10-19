@@ -4,8 +4,8 @@ Atendente de IA no WhatsApp para lanchonetes. O bot tira dúvidas sobre o cardá
 completo (itens, nome, entrega ou retirada, endereço e pagamento), confirma com o cliente e registra
 o pedido com o total calculado pelo sistema.
 
-Feito com **Java 21 + Spring Boot**, **Claude (Anthropic)** para a conversa e a
-**WhatsApp Cloud API** (oficial da Meta) para as mensagens.
+Feito com **Java 21 + Spring Boot**, **PostgreSQL** para os pedidos, **Claude (Anthropic)** para a
+conversa e a **WhatsApp Cloud API** (oficial da Meta) para as mensagens.
 
 ## Como funciona
 
@@ -17,8 +17,9 @@ Cliente no WhatsApp ──> Meta ──> POST /webhook ──> AtendenteIA (Clau
 
 - **AtendenteIA**: guarda a conversa de cada cliente e manda para o Claude junto com o cardápio.
   Quando o cliente confirma, o Claude chama a ferramenta `registrar_pedido`.
-- **PedidoService**: confere se os itens existem e calcula os preços e o total pelo cardápio.
-  A IA nunca define o valor cobrado.
+- **PedidoService**: confere se os itens existem, calcula os preços e o total pelo cardápio e salva
+  no PostgreSQL (tabelas `pedidos` e `pedido_itens`, criadas sozinhas pelo JPA). A IA nunca define o
+  valor cobrado.
 - **cardapio.json**: o cardápio, o horário, a taxa de entrega e as formas de pagamento.
   Para atender outra lanchonete, basta trocar esse arquivo.
 - **Simulador** (`http://localhost:8080`): um chat parecido com o WhatsApp e a lista de pedidos,
@@ -26,13 +27,18 @@ Cliente no WhatsApp ──> Meta ──> POST /webhook ──> AtendenteIA (Clau
 
 ## Rodando no computador
 
-Precisa de Java 21+ e Maven, e de uma chave da API do Claude (crie em https://console.anthropic.com).
+Precisa de Java 21+, Maven, PostgreSQL e uma chave da API do Claude (crie em https://console.anthropic.com).
+
+1. Crie o banco: `CREATE DATABASE bot_lanchonete;`
+2. Rode (Windows, PowerShell):
 
 ```bash
-# Windows (PowerShell)
 $env:ANTHROPIC_API_KEY="sua-chave"
+$env:DB_PASSWORD="senha-do-postgres"
 mvn spring-boot:run
 ```
+
+Usuário e endereço do banco podem ser trocados com `DB_USER` e `DB_URL`.
 
 Abra http://localhost:8080 e mande um "oi".
 
@@ -79,6 +85,6 @@ Testes: `mvn test`
 
 ## Próximos passos
 
-- Salvar pedidos e conversas no PostgreSQL (hoje ficam na memória e somem ao reiniciar).
+- Salvar também as conversas no banco (hoje ficam na memória e recomeçam se o bot reiniciar).
 - Painel para a cozinha mudar o status do pedido e avisar o cliente pelo WhatsApp.
 - Entender áudio e foto.
