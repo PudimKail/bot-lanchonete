@@ -40,7 +40,7 @@ class BotLanchoneteApplicationTests {
 
         // 2 x 25,00 + 6,00 + 5,00 de entrega
         assertThat(pedido.total()).isEqualByComparingTo(new BigDecimal("61.00"));
-        assertThat(pedidoService.resumo(pedido)).contains("Total: R$ 61.00", "2x X-Bacon", "sem tomate");
+        assertThat(pedidoService.resumo(pedido)).contains("Total: R$ 61,00", "2x X-Bacon", "sem tomate");
 
         // O pedido foi salvo no banco com número e itens
         assertThat(pedido.numero()).isNotNull();

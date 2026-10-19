@@ -1,6 +1,6 @@
 package com.pudimkail.botlanchonete.whatsapp;
 
-import com.pudimkail.botlanchonete.ia.AtendenteIA;
+import com.pudimkail.botlanchonete.Atendimento;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProcessadorMensagens {
 
-    private final AtendenteIA atendente;
+    private final Atendimento atendente;
     private final WhatsAppClient whatsApp;
 
-    public ProcessadorMensagens(AtendenteIA atendente, WhatsAppClient whatsApp) {
+    public ProcessadorMensagens(Atendimento atendente, WhatsAppClient whatsApp) {
         this.atendente = atendente;
         this.whatsApp = whatsApp;
     }

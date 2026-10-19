@@ -1,6 +1,6 @@
 package com.pudimkail.botlanchonete.web;
 
-import com.pudimkail.botlanchonete.ia.AtendenteIA;
+import com.pudimkail.botlanchonete.Atendimento;
 import com.pudimkail.botlanchonete.pedido.Pedido;
 import com.pudimkail.botlanchonete.pedido.PedidoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,10 @@ import java.util.Map;
 @RequestMapping("/api")
 public class PainelController {
 
-    private final AtendenteIA atendente;
+    private final Atendimento atendente;
     private final PedidoService pedidoService;
 
-    public PainelController(AtendenteIA atendente, PedidoService pedidoService) {
+    public PainelController(Atendimento atendente, PedidoService pedidoService) {
         this.atendente = atendente;
         this.pedidoService = pedidoService;
     }
@@ -31,6 +31,11 @@ public class PainelController {
     @PostMapping("/simular")
     public Map<String, String> simular(@RequestBody MensagemSimulada msg) {
         return Map.of("resposta", atendente.responder(msg.telefone(), msg.mensagem()));
+    }
+
+    @GetMapping("/modo")
+    public Map<String, String> modo() {
+        return Map.of("modo", atendente.modo());
     }
 
     @GetMapping("/pedidos")

@@ -29,7 +29,7 @@
 <body>
 <main>
   <section class="chat">
-    <div class="topo">Simulador do WhatsApp</div>
+    <div class="topo">Simulador do WhatsApp <small id="modo"></small></div>
     <div id="mensagens"></div>
     <form id="form">
       <input id="texto" placeholder="Digite uma mensagem" autocomplete="off" required>
@@ -95,7 +95,7 @@
       const div = document.createElement("div");
       div.className = "pedido";
       const h3 = document.createElement("h3");
-      h3.textContent = `#${p.numero} - ${p.nomeCliente} - R$ ${Number(p.total).toFixed(2)}`;
+      h3.textContent = `#${p.numero} - ${p.nomeCliente} - ${Number(p.total).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`;
       const itens = document.createElement("div");
       itens.textContent = p.itens.map(i => `${i.quantidade}x ${i.nome}${i.observacao ? " (" + i.observacao + ")" : ""}`).join(", ");
       const info = document.createElement("small");
@@ -107,6 +107,9 @@
 
   adicionar("Mande um \"oi\" para começar o atendimento.", "bot");
   carregarPedidos();
+  fetch("/api/modo").then(r => r.json()).then(m => {
+    document.getElementById("modo").textContent = m.modo === "ia" ? "· atendente com IA" : "· menu numerado";
+  });
 </script>
 </body>
 </html>
