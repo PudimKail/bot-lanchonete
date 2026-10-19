@@ -1,0 +1,18 @@
+{
+  "nomeLanchonete": "Lanchonete do Junior",
+  "horario": "Terça a domingo, das 18h às 23h30",
+  "taxaEntrega": 5.00,
+  "formasPagamento": ["Pix", "Dinheiro", "Cartão na entrega"],
+  "itens": [
+    { "codigo": "X1", "nome": "X-Burguer", "categoria": "Lanches", "preco": 18.00, "descricao": "Pão, hambúrguer, queijo, alface e tomate" },
+    { "codigo": "X2", "nome": "X-Salada", "categoria": "Lanches", "preco": 21.00, "descricao": "Pão, hambúrguer, queijo, presunto, alface, tomate e milho" },
+    { "codigo": "X3", "nome": "X-Bacon", "categoria": "Lanches", "preco": 25.00, "descricao": "Pão, hambúrguer, queijo, bacon, alface e tomate" },
+    { "codigo": "X4", "nome": "X-Tudo", "categoria": "Lanches", "preco": 32.00, "descricao": "Pão, 2 hambúrgueres, queijo, presunto, bacon, ovo, calabresa, alface, tomate e milho" },
+    { "codigo": "H1", "nome": "Cachorro-quente", "categoria": "Lanches", "preco": 15.00, "descricao": "Pão, 2 salsichas, molho, purê, batata palha e milho" },
+    { "codigo": "P1", "nome": "Batata frita (porção)", "categoria": "Porções", "preco": 20.00, "descricao": "400 g de batata frita crocante" },
+    { "codigo": "P2", "nome": "Batata com cheddar e bacon", "categoria": "Porções", "preco": 28.00, "descricao": "400 g de batata frita com cheddar e bacon" },
+    { "codigo": "B1", "nome": "Refrigerante lata", "categoria": "Bebidas", "preco": 6.00, "descricao": "Coca-Cola, Guaraná ou Fanta (350 ml)" },
+    { "codigo": "B2", "nome": "Refrigerante 2 litros", "categoria": "Bebidas", "preco": 14.00, "descricao": "Coca-Cola ou Guaraná" },
+    { "codigo": "B3", "nome": "Suco natural", "categoria": "Bebidas", "preco": 9.00, "descricao": "Laranja, limão ou maracujá (500 ml)" }
+  ]
+}
